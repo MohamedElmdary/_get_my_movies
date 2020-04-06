@@ -13,9 +13,10 @@ class Trending extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemCount: movies.length,
       itemBuilder: (context, index) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          width: 300,
+        return GestureDetector(
+          onTap: () {
+            print('should go to view full movie page (${movies[index].title})');
+          },
           child: TrendMovieWidget(movies[index]),
         );
       },
