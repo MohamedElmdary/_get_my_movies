@@ -4,10 +4,14 @@ import 'package:get_my_movies/environments/environment.dart';
 import 'package:get_my_movies/models/trend.dart';
 
 class TrendMovieWidget extends StatelessWidget {
+  final double _w = 300;
   final TrendMovie movie;
+
   TrendMovieWidget(this.movie);
 
-  final double _w = 300;
+  void _loadFullMovieDetails() {
+    print('should load (${movie.title})');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +24,15 @@ class TrendMovieWidget extends StatelessWidget {
             margin: EdgeInsets.zero,
             clipBehavior: Clip.antiAlias,
             child: CachedNetworkImage(
-              imageUrl: Env.imageApi(movie.poster_path),
+              imageUrl: Env.imageApi(movie.posterPath),
               imageBuilder: (context, imageProvider) {
                 return Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
+                  child: Ink.image(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topCenter,
+                    child: InkWell(
+                      onTap: _loadFullMovieDetails,
                     ),
                   ),
                 );
@@ -43,35 +48,38 @@ class TrendMovieWidget extends StatelessWidget {
           Positioned(
             bottom: 0,
             left: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0.8),
-                    Colors.black.withOpacity(0.1),
-                  ],
-                  stops: [0, 1],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
+            child: InkWell(
+              onTap: _loadFullMovieDetails,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black.withOpacity(0.8),
+                      Colors.black.withOpacity(0.1),
+                    ],
+                    stops: [0, 1],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
                 ),
-              ),
-              width: _w - 20,
-              padding: EdgeInsets.only(
-                left: 10,
-                bottom: 15,
-                top: 25,
-              ),
-              alignment: Alignment.topLeft,
-              child: Text(
-                movie.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 25,
+                width: _w - 20,
+                padding: EdgeInsets.only(
+                  left: 10,
+                  bottom: 15,
+                  top: 25,
                 ),
-                overflow: TextOverflow.ellipsis,
+                alignment: Alignment.topLeft,
+                child: Text(
+                  movie.title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

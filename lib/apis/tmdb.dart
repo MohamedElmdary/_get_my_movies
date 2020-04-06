@@ -16,14 +16,14 @@ class TMDBApi {
         result.add(
           TrendMovie(
             id: res[i]['id'],
-            vote_count: res[i]['vote_count'],
-            vote_average: res[i]['vote_average'],
+            voteCount: res[i]['vote_count'],
+            voteAverage: res[i]['vote_average'],
             title: res[i]['title'],
-            release_date: res[i]['release_date'],
-            original_language: res[i]['original_language'],
+            releaseDate: res[i]['release_date'],
+            originalLanguage: res[i]['original_language'],
             overview: res[i]['overview'],
-            poster_path: res[i]['poster_path'],
-            backdrop_path: res[i]['backdrop_path'],
+            posterPath: res[i]['poster_path'],
+            backdropPath: res[i]['backdrop_path'],
           ),
         );
       }

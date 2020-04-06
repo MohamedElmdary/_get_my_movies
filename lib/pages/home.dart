@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_movies/helpers/offset.dart';
 import 'package:get_my_movies/widgets/header.dart';
 import 'package:get_my_movies/widgets/movie.dart';
 import 'package:get_my_movies/widgets/trending.dart';
 
-class HomePage extends StatelessWidget {
-  final x = List<String>.generate(100000, (i) => "Item $i");
+class HomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _HomePage();
+  }
+}
+
+class _HomePage extends State<HomePage> with OffsetHelper {
+  // should be replaced with popular movies
   final q = List<String>.generate(10000, (i) => "movie $i");
 
   @override
@@ -22,12 +30,7 @@ class HomePage extends StatelessWidget {
       }
       y.add(a);
     }
-    // handle reset later
-    // if (r == 1) {
-    //   y.add([])
-    // } else if (r == 2) {
 
-    // }
     return Scaffold(
       appBar: AppBar(
         title: Text('Logo'),
@@ -36,13 +39,14 @@ class HomePage extends StatelessWidget {
             icon: Icon(Icons.search),
             onPressed: () {
               showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (context) {
-                    return Center(
-                      child: Text('hello world'),
-                    );
-                  });
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return Center(
+                    child: Text('hello world'),
+                  );
+                },
+              );
             },
           )
         ],
@@ -54,12 +58,13 @@ class HomePage extends StatelessWidget {
             return Column(
               children: [
                 Header('Trending'),
-                Trending(),
+                Trending(getOffset, setOffset),
                 Header('Popular Movies'),
               ],
             );
           }
 
+          // check this code later
           final List<Widget> children = [];
           for (var i = 0; i < n; i++) {
             children.add(Movie(n, y[index - 1][i]));

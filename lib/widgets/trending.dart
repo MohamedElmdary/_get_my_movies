@@ -1,25 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:get_my_movies/models/trend.dart';
 import 'package:get_my_movies/providers/trend.dart';
 import 'package:get_my_movies/widgets/trend_movie.dart';
 import 'package:provider/provider.dart';
 
 class Trending extends StatelessWidget {
+  final Function getOffset;
+  final Function setOffset;
+
+  Trending(this.getOffset, this.setOffset);
+
   @override
   Widget build(BuildContext context) {
-    List<TrendMovie> movies = Provider.of<TrendState>(context).movies;
+    final controller = ScrollController(initialScrollOffset: getOffset());
+    final TrendState state = Provider.of<TrendState>(context);
+    final movies = state.movies;
+    final loading = state.loading;
 
-    Widget _child = ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: movies.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            print('should go to view full movie page (${movies[index].title})');
-          },
-          child: TrendMovieWidget(movies[index]),
-        );
+    Widget _child = NotificationListener(
+      onNotification: (ScrollNotification notification) {
+        setOffset(notification.metrics.pixels);
+        return true;
       },
+      child: ListView.builder(
+        controller: controller,
+        scrollDirection: Axis.horizontal,
+        itemCount: 1 + movies.length,
+        itemBuilder: (context, index) {
+          if (index == movies.length) {
+            return Container(
+              padding: EdgeInsets.only(right: 10),
+              child: FlatButton(
+                child:
+                    loading ? CircularProgressIndicator() : Text("Load More"),
+                onPressed: () {
+                  if (!loading) {
+                    state.getMoreTrendMovies();
+                  }
+                },
+              ),
+            );
+          }
+          return TrendMovieWidget(movies[index]);
+        },
+      ),
     );
 
     if (movies.length == 0) {
@@ -30,7 +53,6 @@ class Trending extends StatelessWidget {
     }
 
     return Container(
-      // margin: EdgeInsets.only(top: 10),
       height: 200,
       width: MediaQuery.of(context).size.width,
       child: _child,

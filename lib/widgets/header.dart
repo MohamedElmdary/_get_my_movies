@@ -16,7 +16,7 @@ class Header extends StatelessWidget {
             child: Text(
               data,
               style: TextStyle(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
                 fontSize: 30,
               ),
             ),

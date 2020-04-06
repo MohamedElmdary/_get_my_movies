@@ -3,6 +3,14 @@ import 'package:get_my_movies/apis/tmdb.dart';
 import 'package:get_my_movies/models/trend.dart';
 
 class TrendState with ChangeNotifier {
+  // loading
+  bool _loading = false;
+  get loading => _loading;
+  set loading(bool val) {
+    _loading = val;
+    notifyListeners();
+  }
+
   // page number
   int _page = 1;
   get page => _page;
@@ -19,7 +27,9 @@ class TrendState with ChangeNotifier {
   get error => _error;
 
   getMoreTrendMovies() {
+    loading = true;
     TMDBApi.getTrendMovies(_page).then((respond) {
+      loading = false;
       if (respond.success) {
         _movies.addAll(respond.result);
         incrementPage();
@@ -28,6 +38,7 @@ class TrendState with ChangeNotifier {
       }
       notifyListeners();
     }).catchError((_) {
+      loading = false;
       print('here ?');
       _error = 'Something Went Wrong!';
       notifyListeners();

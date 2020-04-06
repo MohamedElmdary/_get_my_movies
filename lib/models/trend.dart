@@ -1,23 +1,23 @@
 class TrendMovie {
   int id;
-  int vote_count;
-  double vote_average;
+  int voteCount;
+  double voteAverage;
   String title;
-  String release_date;
-  String original_language;
+  String releaseDate;
+  String originalLanguage;
   String overview;
-  String poster_path;
-  String backdrop_path;
+  String posterPath;
+  String backdropPath;
 
   TrendMovie({
     this.id,
-    this.vote_count,
-    this.vote_average,
     this.title,
-    this.release_date,
-    this.original_language,
     this.overview,
-    this.poster_path,
-    this.backdrop_path,
+    this.voteCount,
+    this.voteAverage,
+    this.releaseDate,
+    this.originalLanguage,
+    this.posterPath,
+    this.backdropPath,
   });
 }
