@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_movies/widgets/header.dart';
 import 'package:get_my_movies/widgets/movie.dart';
-import 'package:get_my_movies/widgets/trend_movie.dart';
 import 'package:get_my_movies/widgets/trending.dart';
 
 class HomePage extends StatelessWidget {
@@ -32,6 +31,21 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Logo'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) {
+                    return Center(
+                      child: Text('hello world'),
+                    );
+                  });
+            },
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: 1 + y.length,
