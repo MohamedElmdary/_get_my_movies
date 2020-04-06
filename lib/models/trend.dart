@@ -1,4 +1,4 @@
-class _TrendModel {
+class TrendMovie {
   int id;
   int vote_count;
   double vote_average;
@@ -8,9 +8,16 @@ class _TrendModel {
   String overview;
   String poster_path;
   String backdrop_path;
-}
 
-class TrendModel {
-  int page;
-  List<_TrendModel> results;
+  TrendMovie({
+    this.id,
+    this.vote_count,
+    this.vote_average,
+    this.title,
+    this.release_date,
+    this.original_language,
+    this.overview,
+    this.poster_path,
+    this.backdrop_path,
+  });
 }

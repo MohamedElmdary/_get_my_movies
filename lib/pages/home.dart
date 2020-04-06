@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
             return Column(
               children: [
                 Header('Trending'),
-                Trending(x),
+                Trending(),
                 Header('Popular Movies'),
               ],
             );

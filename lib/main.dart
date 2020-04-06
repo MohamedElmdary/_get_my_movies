@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_movies/pages/home.dart';
+import 'package:get_my_movies/providers/trend.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  Widget app = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => TrendState(),
+      )
+    ],
+    child: MyApp(),
+  );
+  runApp(app);
+}
 
 class MyApp extends StatelessWidget {
   @override
