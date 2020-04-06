@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Trend extends StatelessWidget {
+class TrendMovie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(

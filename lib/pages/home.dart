@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_movies/widgets/header.dart';
-import 'package:get_my_movies/widgets/trend.dart';
+import 'package:get_my_movies/widgets/movie.dart';
+import 'package:get_my_movies/widgets/trend_movie.dart';
+import 'package:get_my_movies/widgets/trending.dart';
 
 class HomePage extends StatelessWidget {
   final x = List<String>.generate(100000, (i) => "Item $i");
-  final q = List<String>.generate(10000, (i) => "Item $i");
+  final q = List<String>.generate(10000, (i) => "movie $i");
 
   @override
   Widget build(BuildContext context) {
+    int n = 2;
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      n = 3;
+    }
     final List y = [];
-    final r = q.length % 3;
-    for (var i = 0; i < q.length - r; i += 3) {
-      final List a = [q[i], q[i + 1], q[i + 2]];
+    final r = q.length % n;
+    for (var i = 0; i < q.length - r; i += n) {
+      final List a = [];
+      for (var j = 0; j < n; j++) {
+        a.add(q[i + j]);
+      }
       y.add(a);
     }
     // handle reset later
@@ -31,53 +40,18 @@ class HomePage extends StatelessWidget {
             return Column(
               children: [
                 Header('Trending'),
-                Container(
-                  // margin: EdgeInsets.only(top: 10),
-                  height: 200,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: x.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        width: 300,
-                        child: Trend(),
-                      );
-                    },
-                  ),
-                ),
-                Header('Popular')
+                Trending(x),
+                Header('Popular Movies'),
               ],
             );
           }
+
+          final List<Widget> children = [];
+          for (var i = 0; i < n; i++) {
+            children.add(Movie(n, y[index - 1][i]));
+          }
           return Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 3,
-                height: 150,
-                color: Colors.red,
-                child: Center(
-                  child: Text('${y[index - 1][0]}'),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 3,
-                height: 150,
-                color: Colors.red,
-                child: Center(
-                  child: Text('${y[index - 1][1]}'),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 3,
-                height: 150,
-                color: Colors.red,
-                child: Center(
-                  child: Text('${y[index - 1][2]}'),
-                ),
-              )
-            ],
+            children: children,
           );
         },
       ),
