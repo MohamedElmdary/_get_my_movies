@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_movies/environments/environment.dart';
 import 'package:get_my_movies/models/trend.dart';
+import 'package:get_my_movies/pages/movie.dart';
 
 class TrendMovieWidget extends StatelessWidget {
   final double _w = 300;
@@ -9,8 +10,13 @@ class TrendMovieWidget extends StatelessWidget {
 
   TrendMovieWidget(this.movie);
 
-  void _loadFullMovieDetails() {
-    print('should load (${movie.title})');
+  void _loadFullMovieDetails(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return MoviePage(movie.id);
+      }),
+    );
   }
 
   @override
@@ -32,7 +38,7 @@ class TrendMovieWidget extends StatelessWidget {
                     fit: BoxFit.cover,
                     alignment: Alignment.topCenter,
                     child: InkWell(
-                      onTap: _loadFullMovieDetails,
+                      onTap: () => _loadFullMovieDetails(context),
                     ),
                   ),
                 );
@@ -49,7 +55,7 @@ class TrendMovieWidget extends StatelessWidget {
             bottom: 0,
             left: 0,
             child: InkWell(
-              onTap: _loadFullMovieDetails,
+              onTap: () => _loadFullMovieDetails(context),
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(

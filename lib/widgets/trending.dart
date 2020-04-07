@@ -6,8 +6,9 @@ import 'package:provider/provider.dart';
 class Trending extends StatelessWidget {
   final Function getOffset;
   final Function setOffset;
+  final int currentMovieId;
 
-  Trending(this.getOffset, this.setOffset);
+  Trending(this.getOffset, this.setOffset, {this.currentMovieId});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,9 @@ class Trending extends StatelessWidget {
                 },
               ),
             );
+          }
+          if (movies[index].id == currentMovieId) {
+            return Container();
           }
           return TrendMovieWidget(movies[index]);
         },

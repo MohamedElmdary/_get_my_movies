@@ -20,8 +20,8 @@ class MoviesState with ChangeNotifier {
   }
 
   // changes
-  List<int> _changes = [];
-  List<int> get changes => List.from(_changes);
+  List<dynamic> _changes = [];
+  List<dynamic> get changes => List.from(_changes);
 
   // movies
   Map<int, MovieModel> _fullMovies = {};

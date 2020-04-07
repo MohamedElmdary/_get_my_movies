@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get_my_movies/pages/home.dart';
-import 'package:get_my_movies/pages/movie.dart';
 import 'package:get_my_movies/providers/movies.dart';
 import 'package:get_my_movies/providers/trend.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,21 @@ void main() {
   runApp(app);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _MyApp();
+  }
+}
+
+class _MyApp extends State<MyApp> {
+  @override
+  void initState() {
+    final cacheManager = DefaultCacheManager();
+    cacheManager.emptyCache();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,32 +42,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "Montserrat",
         brightness: Brightness.dark,
       ),
-      // home: HomePage(),
-      home: MoviePage(1427),
-      // home: Scaffold(
-      //   body: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       Center(
-      //         child: Text('Get My Movies'),
-      //       ),
-      //       SizedBox(height: 10),
-      //       Center(
-      //         child: Text(
-      //           'Get My Movies',
-      //           style: TextStyle(
-      //             fontWeight: FontWeight.bold,
-      //           ),
-      //         ),
-      //       )
-      //     ],
-      //   ),
-      // ),
-      routes: {
-        // '/': (context) {
-        //   return HomePage();
-        // }
-      },
+      home: HomePage(),
     );
   }
 }

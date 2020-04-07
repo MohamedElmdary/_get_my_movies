@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:get_my_movies/environments/api_key.dart';
@@ -81,6 +82,35 @@ class _MoviePage extends State<MoviePage> with OffsetHelper {
     );
   }
 
+  Widget _buildImage(MovieModel movie) {
+    if (movie.backdropPath == null && movie.posterPath == null) {
+      return Container(
+        height: 300,
+        child: Center(
+          child: Text('No Image.'),
+        ),
+      );
+    }
+
+    return CachedNetworkImage(
+        imageUrl: Env.imageApi(
+          movie.posterPath != null ? movie.posterPath : movie.backdropPath,
+        ),
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            height: 300,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+              ),
+              color: Colors.black.withOpacity(0.4),
+              backgroundBlendMode: BlendMode.colorBurn,
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final MoviesState state = Provider.of<MoviesState>(context);
@@ -105,13 +135,7 @@ class _MoviePage extends State<MoviePage> with OffsetHelper {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    background: Image.network(
-                      Env.imageApi(movie.posterPath),
-                      height: 300,
-                      fit: BoxFit.cover,
-                      color: Colors.black.withOpacity(0.2),
-                      colorBlendMode: BlendMode.colorBurn,
-                    ),
+                    background: _buildImage(movie),
                   ),
                 ),
                 SliverList(
@@ -175,12 +199,6 @@ class _MoviePage extends State<MoviePage> with OffsetHelper {
                                           })
                                           .then((opened) {})
                                           .catchError((err) {});
-                                      // if (await )) {
-                                      //   await launch(movie.homepage,
-                                      //       forceSafariVC: true,
-                                      //       forceWebView: true,
-                                      //       enableDomStorage: true);
-                                      // }
                                     },
                                     child: Row(
                                       children: [
@@ -245,7 +263,14 @@ class _MoviePage extends State<MoviePage> with OffsetHelper {
                         ),
                       ),
                       Header('Trends'),
-                      Trending(getOffset, setOffset),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 15),
+                        child: Trending(
+                          getOffset,
+                          setOffset,
+                          currentMovieId: movie.id,
+                        ),
+                      ),
                     ],
                   ),
                 ),

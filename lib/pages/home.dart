@@ -23,39 +23,30 @@ class _HomePage extends State<HomePage> with OffsetHelper {
 
     MoviesState state = Provider.of<MoviesState>(context);
     var changes = state.changes;
-
-    final List<List<int>> moviesId = [];
-    final its = changes.length - (changes.length % n);
-    for (var i = 0; i < its; i += 3) {
-      final List<int> moviesIdList = [];
-      for (var j = 0; j < n; j++) {
-        moviesIdList.add(changes[i + j]);
-      }
-      moviesId.add(moviesIdList);
-    }
+    int iterations = changes.length - (changes.length % n);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Logo'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (context) {
-                  return Center(
-                    child: Text('hello world'),
-                  );
-                },
-              );
-            },
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.search),
+        //     onPressed: () {
+        //       showModalBottomSheet(
+        //         isScrollControlled: true,
+        //         context: context,
+        //         builder: (context) {
+        //           return Center(
+        //             child: Text('hello world'),
+        //           );
+        //         },
+        //       );
+        //     },
+        //   )
+        // ],
       ),
       body: ListView.builder(
-        itemCount: 1 + moviesId.length,
+        itemCount: 1 + iterations,
         itemBuilder: (context, index) {
           if (index == 0) {
             return Column(
@@ -69,7 +60,7 @@ class _HomePage extends State<HomePage> with OffsetHelper {
 
           final List<Widget> children = [];
           for (var i = 0; i < n; i++) {
-            children.add(MovieCard(n, moviesId[index - 1][i]));
+            children.add(MovieCard(n, changes[(index - 1) * n + i]['id']));
           }
           return Row(
             children: children,

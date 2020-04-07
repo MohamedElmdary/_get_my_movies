@@ -10,7 +10,7 @@ class Rate extends StatelessWidget {
     final int fStars = r.floor();
     final List<Widget> children = [];
 
-    for (var i = 0; i < fStars; i++) {
+    for (int i = 0; i < fStars; i++) {
       children.add(Icon(
         Icons.star,
         color: Colors.amber,
@@ -26,7 +26,8 @@ class Rate extends StatelessWidget {
       ));
     }
 
-    for (var i = 0; i <= 5 - children.length; i++) {
+    final int stop = 5 - children.length;
+    for (int j = 0; j < stop; j++) {
       children.add(Icon(
         Icons.star_border,
         color: Colors.amber,

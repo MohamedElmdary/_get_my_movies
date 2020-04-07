@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_my_movies/environments/environment.dart';
 import 'package:get_my_movies/models/movie.dart';
+import 'package:get_my_movies/pages/movie.dart';
 import 'package:get_my_movies/providers/movies.dart';
 import 'package:get_my_movies/widgets/rate.dart';
 import 'package:provider/provider.dart';
@@ -30,8 +31,87 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  void _loadMovieDetails() {
-    print('loading');
+  void _loadMovieDetails(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return MoviePage(movieId);
+      }),
+    );
+  }
+
+  Widget _buildImageStack(
+      BuildContext context, MovieModel movie, Widget image) {
+    return Stack(
+      children: [
+        image,
+        movie.adult
+            ? _buildTag(
+                movie,
+                20,
+                '+18',
+                color: Colors.redAccent,
+              )
+            : Container(),
+        movie.genres.length > 0
+            ? _buildTag(
+                movie,
+                movie.adult ? 60 : 20,
+                movie.genres[0],
+              )
+            : Container(),
+      ],
+    );
+  }
+
+  Widget _buildImage(BuildContext context, MovieModel movie) {
+    if (movie.posterPath == null && movie.backdropPath == null) {
+      return Container(
+        height: 240,
+        child: _buildImageStack(
+          context,
+          movie,
+          Container(
+            child: Center(
+              child: Text('No Image.'),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return CachedNetworkImage(
+      imageUrl: Env.imageApi(
+        movie.posterPath != null ? movie.posterPath : movie.backdropPath,
+      ),
+      imageBuilder: (context, imageProvider) {
+        return Container(
+          height: 240,
+          child: Ink.image(
+            image: imageProvider,
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+            child: _buildImageStack(
+              context,
+              movie,
+              InkWell(
+                onTap: () => _loadMovieDetails(context),
+                child: Container(
+                  color: Colors.black.withOpacity(0.1),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      placeholder: (context, url) {
+        return Container(
+          height: 100,
+          alignment: Alignment.center,
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
   }
 
   @override
@@ -50,7 +130,7 @@ class MovieCard extends StatelessWidget {
       ),
       height: _h,
       child: InkWell(
-        onTap: _loadMovieDetails,
+        onTap: () => _loadMovieDetails(context),
         child: Card(
           clipBehavior: Clip.antiAlias,
           margin: EdgeInsets.zero,
@@ -61,51 +141,7 @@ class MovieCard extends StatelessWidget {
                 )
               : Column(
                   children: [
-                    CachedNetworkImage(
-                      imageUrl: Env.imageApi(movie.posterPath),
-                      imageBuilder: (context, imageProvider) {
-                        return Container(
-                          height: 240,
-                          child: Ink.image(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topCenter,
-                            child: Stack(
-                              children: [
-                                InkWell(
-                                  onTap: _loadMovieDetails,
-                                  child: Container(
-                                    color: Colors.black.withOpacity(0.1),
-                                  ),
-                                ),
-                                movie.adult
-                                    ? _buildTag(
-                                        movie,
-                                        20,
-                                        'Adults',
-                                        color: Colors.redAccent,
-                                      )
-                                    : Container(),
-                                movie.genres.length > 0
-                                    ? _buildTag(
-                                        movie,
-                                        movie.adult ? 60 : 20,
-                                        movie.genres[0],
-                                      )
-                                    : Container(),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      placeholder: (context, url) {
-                        return Container(
-                          height: 100,
-                          alignment: Alignment.center,
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ),
+                    _buildImage(context, movie),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
