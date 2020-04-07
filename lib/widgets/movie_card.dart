@@ -30,6 +30,10 @@ class MovieCard extends StatelessWidget {
     );
   }
 
+  void _loadMovieDetails() {
+    print('loading');
+  }
+
   @override
   Widget build(BuildContext context) {
     final MoviesState state = Provider.of<MoviesState>(context);
@@ -45,106 +49,114 @@ class MovieCard extends StatelessWidget {
         bottom: 15,
       ),
       height: _h,
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        margin: EdgeInsets.zero,
-        child: movie == null
-            ? Container(
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(),
-              )
-            : Column(
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: Env.imageApi(movie.posterPath),
-                    imageBuilder: (context, imageProvider) {
-                      return Container(
-                        height: 240,
-                        child: Ink.image(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                          alignment: Alignment.topCenter,
-                          child: Stack(
-                            children: [
-                              Container(),
-                              movie.adult
-                                  ? _buildTag(
-                                      movie,
-                                      20,
-                                      'Adults',
-                                      color: Colors.redAccent,
-                                    )
-                                  : Container(),
-                              movie.genres.length > 0
-                                  ? _buildTag(
-                                      movie,
-                                      movie.adult ? 60 : 20,
-                                      movie.genres[0],
-                                    )
-                                  : Container(),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    placeholder: (context, url) {
-                      return Container(
-                        height: 100,
-                        alignment: Alignment.center,
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.only(
-                            top: 10,
-                          ),
-                          child: Text(
-                            movie.title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Divider(),
-                        Rate(movie.voteAverage),
-                        Container(
-                          margin: EdgeInsets.only(top: 5),
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              Text(
-                                'Total Votes:',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Text(
-                                  '${movie.voteCount}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
+      child: InkWell(
+        onTap: _loadMovieDetails,
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          margin: EdgeInsets.zero,
+          child: movie == null
+              ? Container(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: Env.imageApi(movie.posterPath),
+                      imageBuilder: (context, imageProvider) {
+                        return Container(
+                          height: 240,
+                          child: Ink.image(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                            child: Stack(
+                              children: [
+                                InkWell(
+                                  onTap: _loadMovieDetails,
+                                  child: Container(
+                                    color: Colors.black.withOpacity(0.1),
                                   ),
                                 ),
-                              ),
-                            ],
+                                movie.adult
+                                    ? _buildTag(
+                                        movie,
+                                        20,
+                                        'Adults',
+                                        color: Colors.redAccent,
+                                      )
+                                    : Container(),
+                                movie.genres.length > 0
+                                    ? _buildTag(
+                                        movie,
+                                        movie.adult ? 60 : 20,
+                                        movie.genres[0],
+                                      )
+                                    : Container(),
+                              ],
+                            ),
                           ),
-                        )
-                      ],
+                        );
+                      },
+                      placeholder: (context, url) {
+                        return Container(
+                          height: 100,
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(),
+                        );
+                      },
                     ),
-                  )
-                ],
-              ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            margin: EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: Text(
+                              movie.title,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Divider(),
+                          Rate(movie.voteAverage),
+                          Container(
+                            margin: EdgeInsets.only(top: 5),
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Total Votes:',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    '${movie.voteCount}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+        ),
       ),
     );
   }

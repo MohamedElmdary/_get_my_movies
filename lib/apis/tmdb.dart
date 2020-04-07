@@ -56,7 +56,7 @@ class TMDBApi {
     MovieModel movie = MovieModel(
       id: detailsResponse['id'],
       adult: detailsResponse['adult'],
-      budget: detailsResponse['budget'].toString(),
+      budget: detailsResponse['budget'] / 1000000,
       genres: List.from(
         detailsResponse['genres'].map((genre) => genre['name']),
       ),

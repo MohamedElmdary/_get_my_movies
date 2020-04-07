@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_movies/pages/home.dart';
+import 'package:get_my_movies/pages/movie.dart';
 import 'package:get_my_movies/providers/movies.dart';
 import 'package:get_my_movies/providers/trend.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         fontFamily: "Montserrat",
         brightness: Brightness.dark,
       ),
-      home: HomePage(),
+      // home: HomePage(),
+      home: MoviePage(1427),
       // home: Scaffold(
       //   body: Column(
       //     mainAxisAlignment: MainAxisAlignment.center,

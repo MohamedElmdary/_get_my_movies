@@ -1,7 +1,7 @@
 class MovieModel {
   int id;
   bool adult;
-  String budget;
+  double budget;
   List<String> genres;
   String homepage;
   String title;
