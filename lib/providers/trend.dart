@@ -4,10 +4,10 @@ import 'package:get_my_movies/models/trend.dart';
 
 class TrendState with ChangeNotifier {
   // loading
-  bool _loading = false;
-  get loading => _loading;
-  set loading(bool val) {
-    _loading = val;
+  bool _trendLoading = false;
+  get trendLoading => _trendLoading;
+  set trendLoading(bool val) {
+    _trendLoading = val;
     notifyListeners();
   }
 
@@ -19,29 +19,31 @@ class TrendState with ChangeNotifier {
   }
 
   // trend movies
-  final List<TrendMovie> _movies = [];
-  List<TrendMovie> get movies => List.from(_movies);
+  final List<BasicMovie> _movies = [];
+  List<BasicMovie> get movies => List.from(_movies);
 
   // handle error
-  String _error;
-  get error => _error;
+  String _trendError;
+  get trendError => _trendError;
+  set trendError(String val) {
+    _trendError = val;
+    notifyListeners();
+  }
 
   getMoreTrendMovies() {
-    loading = true;
+    trendLoading = true;
     TMDBApi.getTrendMovies(_page).then((respond) {
-      loading = false;
+      trendLoading = false;
       if (respond.success) {
         _movies.addAll(respond.result);
         incrementPage();
+        notifyListeners();
       } else {
-        _error = respond.error;
+        trendError = respond.error;
       }
-      notifyListeners();
     }).catchError((_) {
-      loading = false;
-      print('here ?');
-      _error = 'Something Went Wrong!';
-      notifyListeners();
+      trendLoading = false;
+      trendError = 'Something Went Wrong!';
     });
   }
 

@@ -1,7 +1,7 @@
-class Respond<T> {
+class Res<T> {
   bool success;
   String error;
   T result;
 
-  Respond(this.success, {this.result, this.error});
+  Res(this.success, {this.result, this.error});
 }

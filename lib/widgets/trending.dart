@@ -14,7 +14,7 @@ class Trending extends StatelessWidget {
     final controller = ScrollController(initialScrollOffset: getOffset());
     final TrendState state = Provider.of<TrendState>(context);
     final movies = state.movies;
-    final loading = state.loading;
+    final loading = state.trendLoading;
 
     Widget _child = NotificationListener(
       onNotification: (ScrollNotification notification) {

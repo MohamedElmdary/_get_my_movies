@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_movies/pages/home.dart';
+import 'package:get_my_movies/providers/movies.dart';
 import 'package:get_my_movies/providers/trend.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,9 @@ void main() {
     providers: [
       ChangeNotifierProvider(
         create: (_) => TrendState(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => MoviesState(),
       )
     ],
     child: MyApp(),

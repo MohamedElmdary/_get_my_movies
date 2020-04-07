@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_my_movies/helpers/offset.dart';
+import 'package:get_my_movies/providers/movies.dart';
 import 'package:get_my_movies/widgets/header.dart';
-import 'package:get_my_movies/widgets/movie.dart';
+import 'package:get_my_movies/widgets/movie_card.dart';
 import 'package:get_my_movies/widgets/trending.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,23 +14,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> with OffsetHelper {
-  // should be replaced with popular movies
-  final q = List<String>.generate(10000, (i) => "movie $i");
-
   @override
   Widget build(BuildContext context) {
     int n = 2;
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
       n = 3;
     }
-    final List y = [];
-    final r = q.length % n;
-    for (var i = 0; i < q.length - r; i += n) {
-      final List a = [];
+
+    MoviesState state = Provider.of<MoviesState>(context);
+    var changes = state.changes;
+
+    final List<List<int>> moviesId = [];
+    final its = changes.length - (changes.length % n);
+    for (var i = 0; i < its; i += 3) {
+      final List<int> moviesIdList = [];
       for (var j = 0; j < n; j++) {
-        a.add(q[i + j]);
+        moviesIdList.add(changes[i + j]);
       }
-      y.add(a);
+      moviesId.add(moviesIdList);
     }
 
     return Scaffold(
@@ -52,7 +55,7 @@ class _HomePage extends State<HomePage> with OffsetHelper {
         ],
       ),
       body: ListView.builder(
-        itemCount: 1 + y.length,
+        itemCount: 1 + moviesId.length,
         itemBuilder: (context, index) {
           if (index == 0) {
             return Column(
@@ -64,10 +67,9 @@ class _HomePage extends State<HomePage> with OffsetHelper {
             );
           }
 
-          // check this code later
           final List<Widget> children = [];
           for (var i = 0; i < n; i++) {
-            children.add(Movie(n, y[index - 1][i]));
+            children.add(MovieCard(n, moviesId[index - 1][i]));
           }
           return Row(
             children: children,

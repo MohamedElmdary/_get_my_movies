@@ -5,7 +5,7 @@ import 'package:get_my_movies/models/trend.dart';
 
 class TrendMovieWidget extends StatelessWidget {
   final double _w = 300;
-  final TrendMovie movie;
+  final BasicMovie movie;
 
   TrendMovieWidget(this.movie);
 
