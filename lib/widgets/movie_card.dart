@@ -97,6 +97,7 @@ class MovieCard extends StatelessWidget {
               InkWell(
                 onTap: () => _loadMovieDetails(context),
                 child: Container(
+                  height: 240,
                   color: Colors.black.withOpacity(0.1),
                 ),
               ),
@@ -106,7 +107,7 @@ class MovieCard extends StatelessWidget {
       },
       placeholder: (context, url) {
         return Container(
-          height: 100,
+          height: 240,
           alignment: Alignment.center,
           child: CircularProgressIndicator(),
         );

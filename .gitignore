@@ -38,3 +38,4 @@ lib/generated_plugin_registrant.dart
 
 # My Files
 api_key.dart
+key.properties

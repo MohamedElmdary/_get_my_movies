@@ -33,6 +33,7 @@ class TrendMovieWidget extends StatelessWidget {
               imageUrl: Env.imageApi(movie.posterPath),
               imageBuilder: (context, imageProvider) {
                 return Container(
+                  width: _w,
                   child: Ink.image(
                     image: imageProvider,
                     fit: BoxFit.cover,

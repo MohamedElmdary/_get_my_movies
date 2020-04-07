@@ -39,7 +39,7 @@ class Rate extends StatelessWidget {
       Container(
         padding: EdgeInsets.only(left: 10),
         child: Text(
-          '$rate / 10',
+          '$rate',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 15,

@@ -67,9 +67,7 @@ class Trending extends StatelessWidget {
       _child = Center(
         child: Text('No Related Videos.'),
       );
-    }
-
-    if (movies == null || movies.length == 0) {
+    } else if (movies == null || movies.length == 0) {
       _child = Container(
         alignment: Alignment.center,
         child: CircularProgressIndicator(),
