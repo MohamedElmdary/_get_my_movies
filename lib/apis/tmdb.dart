@@ -79,4 +79,24 @@ class TMDBApi {
       return Res(true, result: movie);
     });
   }
+
+  static Future<Res<List<BasicMovie>>> getRecommendationVideos(int id) {
+    return http.get(Env.getRecommendationVideos(id)).then((req) {
+      if (req.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = convert.jsonDecode(req.body);
+        final List<dynamic> res = jsonResponse['results'];
+        final List<BasicMovie> result = [];
+        for (int i = 0; i < res.length; i++) {
+          result.add(
+            BasicMovie(
+                id: res[i]['id'],
+                title: res[i]['title'],
+                posterPath: res[i]['poster_path']),
+          );
+        }
+        return Res(true, result: result);
+      }
+      return Res(false, error: 'Failed To Fetch Movie Changes.');
+    });
+  }
 }

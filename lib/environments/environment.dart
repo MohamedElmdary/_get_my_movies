@@ -24,4 +24,8 @@ class Env {
   static movieVideos(int movieId) {
     return 'https://api.themoviedb.org/3/movie/$movieId/videos?api_key=$API_KEY';
   }
+
+  static getRecommendationVideos(int movieId) {
+    return 'https://api.themoviedb.org/3/movie/$movieId/recommendations?api_key=$API_KEY';
+  }
 }

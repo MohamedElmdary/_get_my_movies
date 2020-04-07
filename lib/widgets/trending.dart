@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_my_movies/providers/movies.dart';
 import 'package:get_my_movies/providers/trend.dart';
 import 'package:get_my_movies/widgets/trend_movie.dart';
 import 'package:provider/provider.dart';
@@ -7,15 +8,27 @@ class Trending extends StatelessWidget {
   final Function getOffset;
   final Function setOffset;
   final int currentMovieId;
+  final bool recommendations;
 
-  Trending(this.getOffset, this.setOffset, {this.currentMovieId});
+  Trending(this.getOffset, this.setOffset,
+      {this.currentMovieId, this.recommendations = false});
 
   @override
   Widget build(BuildContext context) {
     final controller = ScrollController(initialScrollOffset: getOffset());
-    final TrendState state = Provider.of<TrendState>(context);
-    final movies = state.movies;
-    final loading = state.trendLoading;
+    dynamic state;
+    dynamic movies;
+    bool loading;
+
+    if (!recommendations) {
+      state = Provider.of<TrendState>(context);
+      movies = state.movies;
+      loading = state.trendLoading;
+    } else {
+      state = Provider.of<MoviesState>(context);
+      movies = state.getMovieRecommendation(currentMovieId);
+      loading = state.movieLoading;
+    }
 
     Widget _child = NotificationListener(
       onNotification: (ScrollNotification notification) {
@@ -25,9 +38,10 @@ class Trending extends StatelessWidget {
       child: ListView.builder(
         controller: controller,
         scrollDirection: Axis.horizontal,
-        itemCount: 1 + movies.length,
+        itemCount:
+            (recommendations ? 0 : 1) + (movies != null ? movies.length : 0),
         itemBuilder: (context, index) {
-          if (index == movies.length) {
+          if (recommendations && index == movies.length) {
             return Container(
               padding: EdgeInsets.only(right: 10),
               child: FlatButton(
@@ -49,7 +63,13 @@ class Trending extends StatelessWidget {
       ),
     );
 
-    if (movies.length == 0) {
+    if (recommendations && movies != null && movies.length == 0) {
+      _child = Center(
+        child: Text('No Related Videos.'),
+      );
+    }
+
+    if (movies == null || movies.length == 0) {
       _child = Container(
         alignment: Alignment.center,
         child: CircularProgressIndicator(),

@@ -262,6 +262,16 @@ class _MoviePage extends State<MoviePage> with OffsetHelper {
                           ],
                         ),
                       ),
+                      Header('Related'),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 15),
+                        child: Trending(
+                          getOffset,
+                          setOffset,
+                          currentMovieId: movie.id,
+                          recommendations: true,
+                        ),
+                      ),
                       Header('Trends'),
                       Padding(
                         padding: EdgeInsets.only(bottom: 15),
